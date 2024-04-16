@@ -1,13 +1,12 @@
 import requests
 import json
 from xpinyin import Pinyin
-import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 # 通过IP获取中文城市名称的拼音
-city = requests.get('http://myip.ipip.net/json').json()['data']['location'][1]
+city = requests.get('http://myip.ipip.net/json').json()['data']['location'][2]
 city_pinyin = Pinyin().get_pinyin(city).replace('-', '')
 
 # 根据城市名称获取当地的天气数据和建议数据
@@ -62,30 +61,35 @@ match weather:
 
 class Weather(QWidget):
     def __init__(self):
-        super().__init__()
+        super(Weather, self).__init__()
         self.setStyleSheet("background-color: black;")
         self.initUI()
 
     def initUI(self):
+        # 设置网格布局
+        layout = QGridLayout()
+        self.setLayout(layout)
+        # 新建天气信息和图标的标签
         weatherInfo = QLabel(self)
         weatherIcon = QLabel(self)
-        weatherInfo.setGeometry(40, 40, 400, 400)
-        weatherIcon.setGeometry(100, 30, 80, 80)
-        weatherInfo.setStyleSheet("color: white; font-size: 20px;")
+        # 设置天气信息和图标的样式
+        weatherInfo.setStyleSheet("color: white; font-size: 25px;")
         icon = QPixmap(weather_icon)
-        
         info = city_name + '\n' + temperature + '°C' + '\n' + weather + '\n' + '上次更新时间：' + update_time + '\n\n' + '紫外线指数：' + uv + '\n' + '穿衣指数：' + dressing + '\n' + '运动建议：' + sport
         weatherIcon.setPixmap(icon)
         weatherInfo.setText(info)
+        # 设置天气信息和图标的显示效果和位置
         weatherInfo.setScaledContents(True)
         weatherInfo.adjustSize()
         weatherInfo.setAlignment(Qt.AlignCenter)
+        layout.addWidget(weatherIcon, 2, 4, 1, 1)
+        layout.addWidget(weatherInfo, 2, 1, 9, 9)
     
-if __name__ == '__main__':
+''' if __name__ == '__main__':
     app = QApplication(sys.argv)
     weather = Weather()
     weather.show()
-    sys.exit(app.exec_())    
+    sys.exit(app.exec_()) '''
         
 
 

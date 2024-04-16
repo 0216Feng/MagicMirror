@@ -1,8 +1,7 @@
-import sys
-from flask import Flask, request
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from flask import Flask, request
 
 #@app.route('/course', methods=['GET', 'POST'])
 #courseInfo = request.form.get('courseInfo')
@@ -28,7 +27,7 @@ for i in range(len(courseInfo)):
 class Course(QWidget):
     def __init__(self):
         super(Course, self).__init__()
-        self.setGeometry(40, 40, 768, 400)
+        self.resize(768, 200)
         self.initUI()
         
     def initUI(self):
@@ -37,8 +36,11 @@ class Course(QWidget):
         table.setRowCount(4)
         table.setColumnCount(7)
         layout.addWidget(table)
+        # 设置表头(行为日期，列为时间)
         table.setHorizontalHeaderLabels(['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'])
         table.setVerticalHeaderLabels(['9:00-11:50', '12:30-15:20', '15:30-18:20', '19:00-21:50'])
+        table.horizontalHeader().setStyleSheet("QHeaderView::section{font:12pt 'Arial';color: white;};") # 设置表头字体和颜色
+        table.verticalHeader().setStyleSheet("QHeaderView::section{font:12pt 'Arial';color: white;};")
         # 自动调整行高
         table.resizeRowsToContents()
         # 自动换行
@@ -46,14 +48,14 @@ class Course(QWidget):
         # 填充课表信息
         for i in range(len(courseInfo)):
             table.setItem(date[i], time[i], QTableWidgetItem(courseInfo[i]['courseName'] + '\n' + courseInfo[i]['location']))
-        #table.setStyleSheet("color: white;")
+            table.item(date[i], time[i]).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
+        table.setStyleSheet("color: white; font-size: 20px;")
         # 自动调整列宽
         table.resizeRowsToContents()
-        
         self.setLayout(layout)
 
-if __name__ == '__main__':
+''' if __name__ == '__main__':
     app = QApplication(sys.argv)
     table = Course()
     table.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec_()) '''
