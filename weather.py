@@ -6,7 +6,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 # 通过IP获取中文城市名称的拼音
-city = requests.get('http://myip.ipip.net/json').json()['data']['location'][2]
+request = requests.get('http://myip.ipip.net/json').json()
+if request['data']['location'][2] == '' :
+    city = request['data']['location'][1]
+else:
+    city = request['data']['location'][2]
 city_pinyin = Pinyin().get_pinyin(city).replace('-', '')
 
 # 根据城市名称获取当地的天气数据和建议数据

@@ -5,6 +5,9 @@ from PyQt5.QtGui import *
 from course import Course
 from weather import Weather
 from selfcare import SelfCare
+from daily import Daily
+from tips import Tips
+from news import News
 import qdarkstyle
 
 class MainWindow(QMainWindow):
@@ -35,6 +38,12 @@ class MainWindow(QMainWindow):
         self.course = Course()
         # 创建个人护理产品组件
         self.selfcare = SelfCare()
+        # 创建备忘录组件
+        self.tips = Tips()
+        # 创建日程表组件
+        self.daily = Daily()
+        # 创建新闻组件
+        self.news = News()
         # 设置垂直布局
         self.initUI()
     
@@ -45,7 +54,6 @@ class MainWindow(QMainWindow):
         timeDisplay = time.toString("hh:mm:ss \n yyyy-MM-dd dddd")
         # 在Label上显示时间
         self.time.setText(timeDisplay)
-        self.time.setFont(QFont("Arial", 20))
          
     def initUI(self):
         # 设置垂直布局
@@ -57,6 +65,10 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.weather)
         self.layout.addWidget(self.course) 
         self.layout.addWidget(self.selfcare)
+        self.layout.addWidget(self.tips)
+        #self.layout.addWidget(self.news)
+        self.course.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.daily.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.layout.setSpacing(20)   
         # 设置主窗口的布局
         mainWidget = QWidget()
