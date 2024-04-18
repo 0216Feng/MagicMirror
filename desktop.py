@@ -8,6 +8,7 @@ from selfcare import SelfCare
 from daily import Daily
 from tips import Tips
 from news import News
+from gallery import Gallery
 import qdarkstyle
 
 class MainWindow(QMainWindow):
@@ -44,6 +45,8 @@ class MainWindow(QMainWindow):
         self.daily = Daily()
         # 创建新闻组件
         self.news = News()
+        # 创建相册组件
+        self.gallery = Gallery()    
         # 设置垂直布局
         self.initUI()
     
@@ -63,10 +66,12 @@ class MainWindow(QMainWindow):
         # 添加组件到布局
         self.layout.addWidget(self.time)
         self.layout.addWidget(self.weather)
-        self.layout.addWidget(self.course) 
+        '''self.layout.addWidget(self.course) 
         self.layout.addWidget(self.selfcare)
         self.layout.addWidget(self.tips)
-        #self.layout.addWidget(self.news)
+        self.layout.addWidget(self.news)
+        self.layout.addWidget(self.daily)'''
+        self.layout.addWidget(self.gallery)
         self.course.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.daily.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.layout.setSpacing(20)   
