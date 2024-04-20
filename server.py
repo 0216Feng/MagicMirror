@@ -123,7 +123,7 @@ async def getStatus():
         "Weather": items[0][1],
         "News": items[1][1],
         "Course": items[2][1],
-        "Schedules": items[3][1],
+        "Schedule": items[3][1],
         "Tips": items[4][1],
         "Care": items[5][1],
         "Gallery": items[6][1]
@@ -323,6 +323,118 @@ async def addGallery(file: UploadFile = File(...)):
     return {
         "status": 200,
         "message": "Success add gallery."
+    }
+
+
+# Change status
+class Statusinfo(BaseModel):
+    item: str
+    state: int
+    
+@app.post("/changeStatus")
+async def changeStatus(request: Statusinfo):
+    item = request.item
+    state = request.state
+    
+    await database_connection()
+    
+    query = "UPDATE statusInfo SET State = :state WHERE Item = :item"
+    await database.execute(query=query, values={"item": item, "state": state})
+    
+    await database_disconnection()
+    return {
+        "status": 200,
+        "message": "Success change status."
+    }
+
+# Delete
+class DeleteCourseinfo(BaseModel):
+    cid: int
+class DeleteScheduleinfo(BaseModel):
+    sid: int
+class DeleteTipsinfo(BaseModel):
+    tid: int
+class DeleteCareinfo(BaseModel):
+    bid: int
+class DeleteGalleryinfo(BaseModel):
+    gid: int
+
+@app.post("/deleteCourse")
+async def deleteCourse(request: DeleteCourseinfo):
+    cid = request.cid
+    await database_connection()
+    
+    query = "DELETE FROM courseInfo WHERE CID = :cid"
+    await database.execute(query=query, values={"cid": cid})
+    
+    await database_disconnection()
+    return {
+        "status": 200,
+        "message": "Success delete course."
+    }
+
+@app.post("/deleteSchedule")
+async def deleteSchedule(request: DeleteScheduleinfo):
+    sid = request.sid
+    await database_connection()
+    
+    query = "DELETE FROM scheduleInfo WHERE SID = :sid"
+    await database.execute(query=query, values={"sid": sid})
+    
+    await database_disconnection()
+    
+    return {
+        "status": 200,
+        "message": "Success delete schedule."
+    
+    }
+
+@app.post("/deleteTips")
+async def deleteTips(request: DeleteTipsinfo):
+    tid = request.tid
+    await database_connection()
+    
+    query = "DELETE FROM tipsInfo WHERE TID = :tid"
+    await database.execute(query=query, values={"tid": tid})
+    
+    await database_disconnection()
+    return {
+        "status": 200,
+        "message": "Success delete tips."
+    }
+
+@app.post("/deleteCare")
+async def deleteCare(request: DeleteCareinfo):
+    bid = request.bid
+    await database_connection()
+    
+    query = "DELETE FROM careInfo WHERE Bid = :bid"
+    await database.execute(query=query, values={"bid": bid})
+    
+    await database_disconnection()
+    return {
+        "status": 200,
+        "message": "Success delete healthcare."
+    }
+
+@app.post("/deleteGallery")
+async def deleteGallery(request: DeleteGalleryinfo):
+    gid = request.gid
+    await database_connection()
+    
+    query = "SELECT Address FROM galleryInfo WHERE GID = :gid"
+    path = await database.fetch_one(query=query, values={"gid": gid})
+    path = path[0].replace("/assets/", "./assets/")
+    os.remove(path)
+    
+    query = "DELETE FROM galleryInfo WHERE GID = :gid"
+    await database.execute(query=query, values={"gid": gid})
+    
+    await database_disconnection()
+    
+    return {
+        "status": 200,
+        "message": "Success delete gallery."
     }
 
 if __name__ == "__main__":

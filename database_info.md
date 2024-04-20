@@ -75,8 +75,19 @@ Address TEXT NOT NULL);
 | :--------: | :------: | :-----: |
 | Attributes | str, PK  |  int    |
 
-statusInfo表中Item为PRIMARY KEY，用于唯一指定一个项。State为其状态，其值为true(1)/false(0)。
+该表用于检测某个组件时候开启。statusInfo表中Item为PRIMARY KEY，用于唯一指定一个项。State为其状态，其值为true(1)/false(0)。
 
 CREATE TABLE statusInfo (
 Item TEXT PRIMARY KEY NOT NULL,
 State INTERGER NOT NULL);
+
+初始状态下：
+```
+Weather|1
+News|0
+Course|0
+Schedule|0
+Tips|0
+Care|0
+Gallery|0
+```

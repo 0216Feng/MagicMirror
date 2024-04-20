@@ -19,9 +19,13 @@ async function displayCourses() {
             let location = course[i]["Location"]
             let week = course[i]["Week"]
             let description = course[i]["Description"]
+
+            if (!location || location == '') {
+                location = '无'
+            }
             
             let text = `<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
-                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" cid="${cid}">
+                    <button class="courseDelete absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" cid="${cid}">
                         <svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
                             <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
                         </svg>
@@ -74,8 +78,12 @@ async function displaySchedule() {
             let description = schedule[i]["Description"]
             let [day, times] = time.split(' ');
 
+            if (!location || location == '') {
+                location = '无'
+            }
+
             let text = `<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
-                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" sid="${sid}">
+                    <button class="scheduleDelete absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" sid="${sid}">
                         <svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
                             <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
                         </svg>
@@ -128,7 +136,7 @@ async function displayTips() {
             let description = tips[i]["Description"]
 
             let text = `<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
-                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" tid="${tid}">
+                    <button class="tipsDelete absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" tid="${tid}">
                         <svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
                             <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
                         </svg>
@@ -176,7 +184,7 @@ async function displayCare() {
             let timeleft = dayjs(expire).diff(dayjs(), 'day');
 
             let text = `<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
-                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" bid="${bid}">
+                    <button class="careDelete absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" bid="${bid}">
                         <svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
                             <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
                         </svg>
@@ -221,7 +229,7 @@ async function displayGallery() {
             const address = gallery[i]["Address"];
 
             let text = `<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
-                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" gid="${gid}">
+                    <button class="galleryDelete absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" gid="${gid}">
                         <svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
                             <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
                         </svg>
@@ -280,17 +288,18 @@ async function displayStatus() {
 }
 
 // Toast
+let toastIntervalId;
+
 async function showToast(message, duration = 3000) {
     const toast = document.getElementById('toast');
     const toastBody = document.getElementById('toast-body');
     const toastProgress = document.getElementById('toast-progress');
     const closeButton = document.querySelector('.galleryModalClose');
 
-    // 设置提示信息
+    // 如果上一个提示框还没结束，则直接覆盖当前信息，并重置进度条
+    clearInterval(toastIntervalId);
     toastBody.textContent = message;
-
-    // 初始化进度条宽度
-    toastProgress.style.width = '100%';
+    toastProgress.style.width = '0%';
 
     // 显示提示框
     toast.classList.remove('opacity-0');
@@ -298,14 +307,14 @@ async function showToast(message, duration = 3000) {
 
     // 开始递减进度条
     let start = Date.now();
-    const interval = setInterval(() => {
+    toastIntervalId = setInterval(() => {
         let timePassed = Date.now() - start;
         let progress = Math.max(0, 100 - (timePassed / duration) * 100);
         toastProgress.style.width = progress + '%';
 
         // 当进度条完成时，关闭提示框
         if (timePassed >= duration) {
-            clearInterval(interval);
+            clearInterval(toastIntervalId);
             // 隐藏提示框
             toast.classList.remove('opacity-100');
             toast.classList.add('opacity-0');
@@ -318,86 +327,310 @@ async function showToast(message, duration = 3000) {
 
     // 点击关闭按钮隐藏提示框
     closeButton.addEventListener('click', () => {
-        clearInterval(interval);
+        clearInterval(toastIntervalId);
         toast.classList.remove('opacity-100');
         toast.classList.add('opacity-0');
     });
 }
 
-// Bottom of the page
-document.addEventListener('DOMContentLoaded', function() {
+// Switch Bottom Logic
+async function weatherBottomLogic(){
     const toggle = document.getElementById('weatherToggle');
 
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', async function() {
         if (toggle.checked) {
-            console.log('weatherToggle is on');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Weather", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('天气模块已开启');
+                console.log('weatherToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('天气模块开启失败' + error);
+            })
         } else {
-            console.log('weatherToggle is off');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Weather", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('天气模块已关闭');
+                console.log('weatherToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('天气模块关闭失败' + error);
+            })
         }
     });
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('courseToggle');
-
-    toggle.addEventListener('change', function() {
-        if (toggle.checked) {
-            console.log('courseToggle is on');
-        } else {
-            console.log('courseToggle is off');
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
+async function newsBottomLogic(){
     const toggle = document.getElementById('newsToggle');
 
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', async function() {
         if (toggle.checked) {
-            console.log('newsToggle is on');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "News", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('新闻模块已开启');
+                console.log('newsToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('新闻模块开启失败' + error);
+            })
+
         } else {
-            console.log('newsToggle is off');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "News", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('新闻模块已关闭');
+                console.log('newsToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('新闻模块关闭失败' + error);
+            })
         }
     });
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+async function courseBottomLogic(){
+    const toggle = document.getElementById('courseToggle');
+
+    toggle.addEventListener('change', async function() {
+        if (toggle.checked) {
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Course", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('课程模块已开启');
+                console.log('courseToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('课程模块开启失败' + error);
+            })
+            
+        } else {
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Course", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('课程模块已关闭');
+                console.log('courseToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('课程模块关闭失败' + error);
+            })
+        }
+    });
+}
+
+async function scheduleBottomLogic(){
     const toggle = document.getElementById('scheduleToggle');
 
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', async function() {
         if (toggle.checked) {
-            console.log('scheduleToggle is on');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Schedule", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('日程模块已开启');
+                console.log('scheduleToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('日程模块开启失败' + error);
+            })
         } else {
-            console.log('scheduleToggle is off');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Schedule", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('日程模块已关闭');
+                console.log('scheduleToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('日程模块关闭失败' + error);
+            })
         }
     });
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+async function tipsBottomLogic(){
+    const toggle = document.getElementById('tipsToggle');
+
+    toggle.addEventListener('change', async function() {
+        if (toggle.checked) {
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Tips", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('备忘录模块已开启');
+                console.log('tipsToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('备忘录模块开启失败' + error);
+            })
+        } else {
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Tips", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('备忘录模块已关闭');
+                console.log('tipsToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('备忘录模块关闭失败' + error);
+            })
+        }
+    });
+}
+
+async function careBottomLogic(){
     const toggle = document.getElementById('careToggle');
 
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', async function() {
         if (toggle.checked) {
-            console.log('careToggle is on');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Care", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('个人护理产品模块已开启');
+                console.log('careToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('个人护理产品模块开启失败' + error);
+            })
         } else {
-            console.log('careToggle is off');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Care", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('个人护理产品模块已关闭');
+                console.log('careToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('个人护理产品模块关闭失败' + error);
+            })
         }
     });
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+async function galleryBottomLogic(){
     const toggle = document.getElementById('galleryToggle');
 
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', async function() {
         if (toggle.checked) {
-            console.log('galleryToggle is on');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Gallery", state: 1})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('相册模块已开启');
+                console.log('galleryToggle is on');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('相册模块开启失败' + error);
+            })
         } else {
-            console.log('galleryToggle is off');
+            await fetch('/changeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({item: "Gallery", state: 0})
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                showToast('相册模块已关闭');
+                console.log('galleryToggle is off');
+            }).catch(error => {
+                console.error('Error:', error);
+                showToast('相册模块关闭失败' + error);
+            })
         }
     });
-});
+}
 
-// Add bottom logic
+// Add bottoms logic
 async function addCourse() {
     // 获取模态和按钮元素
     const modal = document.getElementById('courseModal');
@@ -408,7 +641,7 @@ async function addCourse() {
     const week = document.getElementById('Courseweek');
     const time = document.getElementById('Coursetime');
     const location = document.getElementById('Courselocation');
-    
+
     // 显示模态的函数
     function showModal() {
         modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -440,6 +673,18 @@ async function addCourse() {
     // 处理确认按钮点击事件
     const confirmButton = document.getElementById('courseModalConfirm');
     confirmButton.addEventListener('click', async() => {
+        if (title.value === '') {
+            showToast('请输入标题');
+            return;
+        }
+        if (week.value === '') {
+            showToast('请输入星期');
+            return;
+        }
+        if (time.value === '') {
+            showToast('请输入时间');
+            return;
+        }
         const userInput = {
             title: title.value,
             description: description.value,
@@ -456,13 +701,19 @@ async function addCourse() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userInput),
-            }).then(response => {
+            }).then(async response => {
                 if (!response.ok) {
                     throw Error(`HTTP error! status: ${response.status}`);
                 }
                 showToast('添加课程成功');
                 console.log('添加课程成功');
-                return response;
+                title.value = '';
+                description.value = '';
+                week.value = '';
+                time.value = '';
+                location.value = '';
+                await displayCourses();
+                await deleteCourseLogic();
             }).catch(error => {
                 showToast(`添加课程失败: ${error.message}`);
                 throw error;
@@ -521,6 +772,14 @@ async function addSchedule() {
     // 处理确认按钮点击事件
     const confirmButton = document.getElementById('scheduleModalConfirm');
     confirmButton.addEventListener('click', async() => {
+        if (title.value === '') {
+            showToast('请输入标题');
+            return;
+        }
+        if (time.value === '') {
+            showToast('请输入时间');
+            return;
+        }
         const userInput = {
             title: title.value,
             description: description.value,
@@ -536,13 +795,18 @@ async function addSchedule() {
             },
             body: JSON.stringify(userInput),
         })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
                 throw Error(`HTTP error! status: ${response.status}`);
             }
             showToast('添加日程成功');
             console.log('添加日程成功');
-            return response;
+            title.value = '';
+            description.value = '';
+            time.value = '';
+            location.value = '';
+            await displaySchedule();
+            await deleteScheduleLogic();
         })
         .catch(error => {
             showToast(`添加日程失败: ${error.message}`);
@@ -599,6 +863,15 @@ async function addTips() {
     // 处理确认按钮点击事件
     const confirmButton = document.getElementById('tipsModalConfirm');
     confirmButton.addEventListener('click', async() => {
+        if (title.value === '') {
+            showToast('请输入标题');
+            return;
+        }
+        if (description.value === '') {
+            showToast('请输入内容');
+            return;
+        }
+    
         const published = dayjs().format('YYYY-MM-DD HH:mm:ss');
         const userInput = {
             title: title.value,
@@ -613,16 +886,19 @@ async function addTips() {
             },
             body: JSON.stringify(userInput),
         })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
                 throw Error(`HTTP error! status: ${response.status}`);
             }
-            showToast('添加Tips成功');
-            console.log('添加Tips成功');
-            return response;
+            showToast('添加备忘录成功');
+            console.log('添加备忘录成功');
+            title.value = '';
+            description.value = '';
+            await displayTips();
+            await deleteTipsLogic();
         })
         .catch(error => {
-            showToast(`添加Tips失败: ${error.message}`);
+            showToast(`添加备忘录失败: ${error.message}`);
             console.log(`Request failed: ${error.message}`);
             throw error;
         })
@@ -650,7 +926,7 @@ async function addCare() {
     function showModal() {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100');
-        title.focus(); // 自动聚焦到输入框
+        brand.focus(); // 自动聚焦到输入框
     }
 
     // 隐藏模态的函数
@@ -677,6 +953,18 @@ async function addCare() {
     // 处理确认按钮点击事件
     const confirmButton = document.getElementById('careModalConfirm');
     confirmButton.addEventListener('click', async() => {
+        if (brand.value === '') {
+            showToast('请输入品牌');
+            return;
+        }
+        if (type.value === '') {
+            showToast('请输入产品类型');
+            return;
+        }
+        if (expire.value === '') {
+            showToast('请输入过期时间');
+            return;
+        }
         const userInput = {
             brand: brand.value,
             type: type.value,
@@ -691,16 +979,21 @@ async function addCare() {
             },
             body: JSON.stringify(userInput)
         })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
                 throw Error(`HTTP error! status: ${response.status}`);
             }
-            showToast('添加Tips成功');
-            console.log('添加Tips成功');
-            return response;
+            showToast('添加个人护理产品成功');
+            console.log('添加个人护理产品成功');
+            brand.value = '';
+            type.value = '';
+            expire.value = '';
+            description.value = '';
+            await displayCare();
+            await deleteCareLogic();
         })
         .catch(error => {
-            showToast(`添加Tips失败: ${error.message}`);
+            showToast(`添加个人护理产品失败: ${error.message}`);
             console.log(`Request failed: ${error.message}`);
             throw error;
         })
@@ -789,6 +1082,10 @@ async function addGallery() {
     async function uploadFile(file) {
         const formData = new FormData();
         formData.append('file', file);
+        if (!file) {
+            showToast('文件列表为空');
+            return;
+        }
 
         try {
             const response = await fetch('/addGallery', {
@@ -803,7 +1100,10 @@ async function addGallery() {
             const result = await response.json();
             showToast('上传成功');
             console.log('上传成功', result);
+            clearFile();
             hideModal();
+            await displayGallery();
+            await deleteGalleryLogic();
         } catch (error) {
             console.error('Error uploading file:', error);
             showToast('上传失败' + error);
@@ -858,19 +1158,235 @@ async function addGallery() {
     });
 }
 
+// Delete bottoms logic
+async function deleteCourseLogic() {
+    const deleteButtons = document.querySelectorAll('.courseDelete');
 
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const cid = this.getAttribute('cid');
+            
+            const data = { 
+                cid: cid
+            };
+
+            await deleteCourse(data);
+        });
+    });
+
+    async function deleteCourse(data) {
+        try {
+            const response = await fetch('/deleteCourse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            showToast('删除成功');
+            console.log('Delete successful.');
+            await displayCourses();
+            await deleteCourseLogic();
+        } catch (error) {
+            
+            console.error('Error deleting:', error);
+        }
+    }
+}
+
+async function deleteScheduleLogic() {
+    const deleteButtons = document.querySelectorAll('.scheduleDelete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const sid = this.getAttribute('sid');
+            
+            const data = { 
+                sid: sid
+            };
+
+            await deleteSchedule(data);
+        });
+    });
+
+    async function deleteSchedule(data) {
+        try {
+            const response = await fetch('/deleteSchedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            showToast('删除成功');
+            console.log('Delete successful.');
+            await displaySchedule();
+            await deleteScheduleLogic();
+        } catch (error) {
+            
+            console.error('Error deleting:', error);
+        }
+    }
+}
+
+async function deleteTipsLogic() {
+    const deleteButtons = document.querySelectorAll('.tipsDelete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const tid = this.getAttribute('tid');
+            
+            const data = { 
+                tid: tid
+            };
+
+            await deleteTips(data);
+        });
+    });
+
+    async function deleteTips(data) {
+        try {
+            const response = await fetch('/deleteTips', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            showToast('删除成功');
+            console.log('Delete successful.');
+            await displayTips();
+            await deleteTipsLogic();
+        } catch (error) {
+            
+            console.error('Error deleting:', error);
+        }
+    }
+}
+
+async function deleteCareLogic() {
+    const deleteButtons = document.querySelectorAll('.careDelete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const bid = this.getAttribute('bid');
+            
+            const data = { 
+                bid: bid
+            };
+
+            await deleteCare(data);
+        });
+    });
+
+    async function deleteCare(data) {
+        try {
+            const response = await fetch('/deleteCare', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            showToast('删除成功');
+            console.log('Delete successful.');
+            await displayCare();
+            await deleteCareLogic();
+        } catch (error) {
+            
+            console.error('Error deleting:', error);
+        }
+    }
+}
+
+async function deleteGalleryLogic() {
+    const deleteButtons = document.querySelectorAll('.galleryDelete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const gid = this.getAttribute('gid');
+            
+            const data = { 
+                gid: gid
+            };
+
+            await deleteGallery(data);
+            await deleteGalleryLogic();
+        });
+    });
+
+    async function deleteGallery(data) {
+        try {
+            const response = await fetch('/deleteGallery', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            showToast('删除成功');
+            console.log('Delete successful.');
+            await displayGallery();
+        } catch (error) {
+            
+            console.error('Error deleting:', error);
+        }
+    }
+}
+
+// Initial start
 async function initialStart() {
-    displayCourses();
-    displaySchedule();
-    displayTips();
-    displayCare();
-    displayGallery();
-    displayStatus();
-    addCourse();
-    addSchedule();
-    addTips();
-    addCare();
-    addGallery();
+    await displayCourses();
+    await displaySchedule();
+    await displayTips();
+    await displayCare();
+    await displayGallery();
+    await displayStatus();
+
+    await weatherBottomLogic();
+    await newsBottomLogic();
+    await courseBottomLogic();
+    await scheduleBottomLogic();
+    await tipsBottomLogic();
+    await careBottomLogic();
+    await galleryBottomLogic();
+
+    await addCourse();
+    await addSchedule();
+    await addTips();
+    await addCare();
+    await addGallery();
+
+    await deleteCourseLogic();
+    await deleteScheduleLogic();
+    await deleteTipsLogic();
+    await deleteCareLogic();
+    await deleteGalleryLogic();
 }
 
 window.onload = initialStart;
