@@ -52,9 +52,31 @@ Description Text NOT NULL);
 careInfo表中BID为PRIMARY KEY，用于唯一指定一个项。Brand表示个人护理产品的品牌，Type表示个人护理产品的类型，Expire表示过期的时间，Description表示备注内容和其它描述。
 
 CREATE TABLE careInfo (
-TID INTEGER PRIMARY KEY NOT NULL,
+BID INTEGER PRIMARY KEY NOT NULL,
 Brand TEXT NOT NULL,
 Type TEXT NOT NULL,
 Expire TEXT NOT NULL,
 Description Text);
 
+## galleryInfo
+
+|   Items    |   GID   |  Address  |
+| :--------: | :-----: | :-------: |
+| Attributes | int, PK |    str    |
+
+galleryInfo表中GID为PRIMARY KEY，用于唯一指定一个项。Address表示图片文件所在的路径。
+
+CREATE TABLE galleryInfo (
+GID INTEGER PRIMARY KEY NOT NULL,
+Address TEXT NOT NULL);
+
+## statusInfo
+|   Items    |   Item   |  State  |
+| :--------: | :------: | :-----: |
+| Attributes | str, PK  |  int    |
+
+statusInfo表中Item为PRIMARY KEY，用于唯一指定一个项。State为其状态，其值为true(1)/false(0)。
+
+CREATE TABLE statusInfo (
+Item TEXT PRIMARY KEY NOT NULL,
+State INTERGER NOT NULL);
