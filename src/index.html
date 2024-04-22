@@ -72,12 +72,12 @@
 						</h3>
 						<label for="weatherToggle" class="flex items-center cursor-pointer ml-4">
 							<div class="relative">
-								<input id="weatherToggle" type="checkbox" class="sr-only" />
+								<input id="weatherToggle" type="checkbox" class="sr-only" checked disabled />
 								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
 								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
 							</div>
 						</label>
-						<h4 class="mt-3 text-sm font-medium">在镜子上展示当前位置的天气信息.<br /></h4>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示当前位置的天气信息 (默认一直开启).<br /></h4>
 					</div>
 				</div>
 				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
@@ -389,7 +389,7 @@
 			<input type="text" id="Coursedescription" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入描述">
 
 			<label for="Courseweek" class="course-modal-label">星期<span class="text-red-500">*</span>：</label>
-			<input type="text" id="Courseweek" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入课程位于星期几">
+			<input type="text" id="Courseweek" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入星期，例如：'星期一'">
 
 			<label for="Coursetime" class="course-modal-label">时间<span class="text-red-500">*</span>：</label>
 			<input type="text" id="Coursetime" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入时间">
@@ -458,7 +458,7 @@
 				</div>
 			</div>
 			<label for="tipsTitle" class="modal-label">备忘录标题<span class="text-red-500">*</span>：
-			<input type="text" id="tipsTitle" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入备忘录内容...">
+			<input type="text" id="tipsTitle" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入备忘录标题...">
 
 			<label for="tipsContent" class="modal-label">备忘录内容<span class="text-red-500">*</span>：
 				<input type="text" id="tipsContent" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入备忘录内容...">
@@ -493,7 +493,7 @@
 			<input type="text" id="careType" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入个人护理产品类型...">
 
 			<label for="careExpire" class="modal-label">保质期<span class="text-red-500">*</span>：
-			<input type="text" id="careExpire" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入个人护理产品类型...">
+			<input type="text" id="careExpire" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入保质期，YYYY-MM-DD...">
 
 			<label for="careDescription" class="modal-label">描述（可选）：
 			<input type="text" id="careDescription" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入描述...">
