@@ -248,6 +248,7 @@ async function displayGallery() {
     }
 }
 
+let onCount = 0;
 async function displayStatus() {
     weatherToggle = document.getElementById('weatherToggle');
     newsToggle = document.getElementById('newsToggle');
@@ -265,22 +266,29 @@ async function displayStatus() {
         }
         if (status["News"] == 1) {
             newsToggle.checked = true;
+            onCount++;
         }
         if (status["Course"] == 1) {
             courseToggle.checked = true;
+            onCount++;
         }
         if (status["Schedule"] == 1) {
             scheduleToggle.checked = true;
+            onCount++;
         }
         if (status["Tips"] == 1) {
             tipsToggle.checked = true;
+            onCount++;
         }
         if (status["Care"] == 1) {
             careToggle.checked = true;
+            onCount++;
         }
         if (status["Gallery"] == 1) {
             galleryToggle.checked = true;
+            onCount++;
         }
+        console.log("Open bottoms: " + onCount);
     }
     catch (error) {
         console.log(error);
@@ -381,6 +389,12 @@ async function newsBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 > 2){
+                showToast('除天气外最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -399,6 +413,7 @@ async function newsBottomLogic(){
             })
 
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -424,6 +439,12 @@ async function courseBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 >= 2){
+                showToast('除了天气外最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -442,6 +463,7 @@ async function courseBottomLogic(){
             })
             
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -467,6 +489,12 @@ async function scheduleBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 > 2){
+                showToast('除了课程模块最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -484,6 +512,7 @@ async function scheduleBottomLogic(){
                 showToast('日程模块开启失败' + error);
             })
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -509,6 +538,12 @@ async function tipsBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 > 2){
+                showToast('除天气外最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -526,6 +561,7 @@ async function tipsBottomLogic(){
                 showToast('备忘录模块开启失败' + error);
             })
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -551,6 +587,12 @@ async function careBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 > 2){
+                showToast('除天气外最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -568,6 +610,7 @@ async function careBottomLogic(){
                 showToast('个人护理产品模块开启失败' + error);
             })
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -593,6 +636,12 @@ async function galleryBottomLogic(){
 
     toggle.addEventListener('change', async function() {
         if (toggle.checked) {
+            if (onCount + 1 > 2){
+                showToast('除天气外最多只能开启两个模块');
+                toggle.checked = false;
+                return;
+            }
+            onCount++;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
@@ -610,6 +659,7 @@ async function galleryBottomLogic(){
                 showToast('相册模块开启失败' + error);
             })
         } else {
+            onCount--;
             await fetch('/changeStatus', {
                 method: 'POST',
                 headers: {
