@@ -4,6 +4,7 @@ from xpinyin import Pinyin
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+import sys
 
 # 通过IP获取中文城市名称的拼音
 request = requests.get('http://myip.ipip.net/json').json()
@@ -67,6 +68,7 @@ class Weather(QWidget):
     def __init__(self):
         super(Weather, self).__init__()
         self.setStyleSheet("background-color: black;")
+        self.resize(768, 200)
         self.initUI()
 
     def initUI(self):

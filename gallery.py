@@ -3,26 +3,24 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import os
-import sys
 
 class Gallery(QWidget):
     def __init__(self, parent=None):
         super(Gallery, self).__init__(parent)
         self.setWindowTitle("Gallery")
-        self.resize(768, 400)
         
         # 新建一个堆叠窗口
         stackedWidget = SlidingStackedWidget(self)
         self.stackedWidget = stackedWidget
         # 设置布局
-        layout = QVBoxLayout()
+        layout = QHBoxLayout()
         layout.addWidget(stackedWidget)
         self.setLayout(layout)
         # 添加图片页面
-        for name in os.listdir('./images'):
+        for name in os.listdir('./assets'):
             label = QLabel(self.stackedWidget)
             label.setScaledContents(True)
-            label.setPixmap(QPixmap('./images/' + name))
+            label.setPixmap(QPixmap('./assets/' + name))
             label.setScaledContents(True) # 图片自适应大小
             label.setMaximumSize(768, 400) # 限制图片最大尺寸
             self.stackedWidget.addWidget(label)

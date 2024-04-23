@@ -3,6 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import datetime
 import sqlite3
+import sys
 
 # 连接数据库
 database = sqlite3.connect('database.db')
@@ -28,11 +29,36 @@ def get_expire_date(date_str):
     delta = expire_date - today
     return delta.days
 
+class Update(QObject):
+    update_data = pyqtSignal()
+    def __init__(self):
+        super(Update, self).__init__()
+        # 创建一个定时器，每隔一定时间检查数据库数据变化
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.checkDatabase)
+        self.timer.start(5000)  # 每隔5秒检查一次     
+        
+    def checkDatabase(self):
+        global careInfo
+        # 连接数据库
+        database = sqlite3.connect('database.db')
+        query = "SELECT * FROM careInfo"
+        result = database.execute(query)
+        # 读取数据
+        temp = []
+        for row in result.fetchall():
+            temp.append({'brand': row[1], 'type': row[2], 'expire': row[3]}) 
+        if temp != careInfo:  
+            careInfo = temp
+            self.update_data.emit()
+
 class SelfCare(QWidget):
     def __init__(self):
         super(SelfCare, self).__init__()
-        self.resize(768, 200)
+        self.resize(768, 400)
         self.initUI()
+        self.update = Update()
+        self.update.update_data.connect(self.updateData)
         
     def initUI(self):
         # 设置水平布局
@@ -55,7 +81,26 @@ class SelfCare(QWidget):
             table.setItem(i, 2, QTableWidgetItem(str(get_expire_date(careInfo[i]['expire'])) + '天'))
             table.item(i, 2).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
         table.setStyleSheet("color: white; font-size: 20px;")
+        table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setLayout(layout)
+        
+    def updateData(self):
+        # 获取表格
+        table = self.layout().itemAt(0).widget()
+        # 更新行数
+        table.setRowCount(len(careInfo))
+        # 清空表格
+        for i in range(table.rowCount()):
+            for j in range(table.columnCount()):
+                table.setItem(i, j, QTableWidgetItem())
+        # 填充日程表信息
+        for i in range(len(careInfo)):
+            table.setItem(i, 0, QTableWidgetItem(careInfo[i]['brand']))
+            table.item(i, 0).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
+            table.setItem(i, 1, QTableWidgetItem(careInfo[i]['type']))
+            table.item(i, 1).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
+            table.setItem(i, 2, QTableWidgetItem(str(get_expire_date(careInfo[i]['expire'])) + '天'))
+            table.item(i, 2).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
 
 ''' if __name__ == '__main__':
     app = QApplication(sys.argv)

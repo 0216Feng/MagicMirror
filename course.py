@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import sqlite3
+import sys
 
 # 连接数据库
 database = sqlite3.connect('database.db')
@@ -24,18 +25,53 @@ for row in result.fetchall():
 weekdays = {'星期一': 0, '星期二': 1, '星期三': 2, '星期四': 3, '星期五': 4, '星期六': 5, '星期日': 6}
 timeFrame = {'9:00-11:50': 0, '12:30-15:20': 1, '15:30-18:20': 2, '19:00-21:50': 3}
 # 提取课表信息中的日期和时间
-date = [0] * len(courseInfo)
-time = [0] * len(courseInfo)
+date = [] 
+time = [] 
 for i in range(len(courseInfo)):
-    date[i] = weekdays[courseInfo[i]['week']]
-    time[i] = timeFrame[courseInfo[i]['time']]
+    date.append(weekdays[courseInfo[i]['week']])
+    time.append(timeFrame[courseInfo[i]['time']])
+
+class Update(QObject):
+    update_data = pyqtSignal()
+    def __init__(self):
+        super(Update, self).__init__()
+        # 创建一个定时器，每隔一定时间检查数据库数据变化
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.checkDatabase)
+        self.timer.start(5000)  # 每隔5秒检查一次     
+        
+    def checkDatabase(self):
+        global courseInfo, date, time
+        # 连接数据库
+        database = sqlite3.connect('database.db')
+        query = "SELECT * FROM courseInfo"
+        result = database.execute(query)
+        # 读取数据
+        temp = []
+        temp_date = []
+        temp_time = [] 
+        for row in result.fetchall():
+            temp.append({'courseName': row[1], 'time': row[2], 'location': row[3], 'week': row[4]})  
+        for i in range(len(temp)):
+            temp_date.append(weekdays[temp[i]['week']])
+            temp_time.append(timeFrame[temp[i]['time']]) 
+        if temp != courseInfo:  
+            courseInfo = temp
+            date.clear()  # 清空原有数据
+            time.clear()  # 清空原有数据
+            date.extend(temp_date)  # 将新的日期数据添加到date中
+            time.extend(temp_time)  # 将新的时间数据添加到time中
+            self.update_data.emit()
+            
 
 class Course(QWidget):
     def __init__(self):
         super(Course, self).__init__()
-        self.resize(768, 200)
+        self.resize(768, 300)
         self.initUI()
-        
+        self.update = Update()
+        self.update.update_data.connect(self.updateTable)
+            
     def initUI(self):
         table = QTableWidget()
         layout = QHBoxLayout()
@@ -61,9 +97,21 @@ class Course(QWidget):
         table.resizeColumnsToContents()
         table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setLayout(layout)
+        
+    def updateTable(self):
+        # 获取表格
+        table = self.layout().itemAt(0).widget()
+        # 清空表格
+        for i in range(table.rowCount()):
+            for j in range(table.columnCount()):
+                table.setItem(i, j, QTableWidgetItem())
+        # 填充课表信息
+        for i in range(len(courseInfo)):
+            table.setItem(time[i], date[i], QTableWidgetItem(courseInfo[i]['courseName'] + '\n' + courseInfo[i]['location']))
+            table.item(time[i], date[i]).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
 
-''' if __name__ == '__main__':
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     table = Course()
     table.show()
-    sys.exit(app.exec_()) '''
+    sys.exit(app.exec_()) 
