@@ -8,6 +8,7 @@ import sys
 
 # 通过IP获取中文城市名称的拼音
 request = requests.get('http://myip.ipip.net/json').json()
+# 部分地区（如香港、澳门）没有区县名称，所以需要判断
 if request['data']['location'][2] == '' :
     city = request['data']['location'][1]
 else:

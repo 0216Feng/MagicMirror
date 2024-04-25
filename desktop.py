@@ -48,7 +48,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         
         # 设置窗口大小
-        self.setGeometry(400, 0, 768, 1366) #屏幕竖屏分辨率为768*1366
+        self.setGeometry(0, 0, 768, 1366) #屏幕竖屏分辨率为768*1366
         # 设置窗口背景颜色
         self.setStyleSheet("background-color: black;")
         # 无边框
@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.course.setMinimumSize(768, 300)
         # 创建个人护理产品组件
         self.selfcare = SelfCare()
-        self.selfcare.setMinimumSize(768, 300)
+        self.selfcare.setMinimumSize(768, 200)
         # 创建备忘录组件
         self.tips = Tips()
         # 创建日程表组件

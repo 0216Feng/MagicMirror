@@ -110,8 +110,8 @@ class Course(QWidget):
             table.setItem(time[i], date[i], QTableWidgetItem(courseInfo[i]['courseName'] + '\n' + courseInfo[i]['location']))
             table.item(time[i], date[i]).setTextAlignment(Qt.AlignCenter) # 设置单元格居中
 
-if __name__ == '__main__':
+''' if __name__ == '__main__':
     app = QApplication(sys.argv)
     table = Course()
     table.show()
-    sys.exit(app.exec_()) 
+    sys.exit(app.exec_()) '''
