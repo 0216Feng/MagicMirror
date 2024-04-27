@@ -18,7 +18,7 @@ def listen():
     RATE = 16000 #采样率
     WAVE_OUTPUT_FILENAME = 'output.wav'
 
-    mindb=8000    #录音音量阈值，大于则开始录音，否则结束(麦克风噪音较大，可以适当调大)
+    mindb=100    #录音音量阈值，大于则开始录音，否则结束(麦克风噪音较大，可以适当调大)
     delayTime=5  #音量小于阈值5秒后自动终止
     p = pyaudio.PyAudio()
     stream = p.open(format=FORMAT,
@@ -32,7 +32,7 @@ def listen():
     flag = False            # 开始录音节点
     stat = True				#判断是否继续录音
     stat2 = False			#判断声音小于阈值
-
+    empty = True            #判断是否为空音频
     tempnum = 0				#tempnum、tempnum2、tempnum3为时间
     tempnum2 = 0
 
@@ -43,7 +43,7 @@ def listen():
         volume = np.max(audio_data)
         if volume > mindb and flag==False:
             flag =True
-            
+            empty = False
             print("开始录音")
             tempnum2=tempnum
 
@@ -84,9 +84,13 @@ def listen():
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
-    return True   
+    if(empty):
+        print("录音为空")
+        return False
+    else: 
+        return True   
 
-listen()
+#listen()
 
 # https://xfyun-doc.xfyun.cn/static/16735945125044764/lfasr_new_python_demo.zip
 lfasr_host = 'https://raasr.xfyun.cn/v2/api'
@@ -186,9 +190,8 @@ class RequestApi(object):
         return complete_sentence
  
  
-'''if __name__ == '__main__':
-    api = RequestApi(appid="9de35c86", secret_key="ce48950bb9ce8acde19dd90e9d1b8657", upload_file_path=r"test.wav")
-    while True:
-        listen()
-        if(listen()):
-            api.get_result()'''
+if __name__ == '__main__':
+    api = RequestApi(appid="9de35c86", secret_key="ce48950bb9ce8acde19dd90e9d1b8657", upload_file_path=r"output.wav")
+    #while True:
+    if(listen()):
+        api.get_result()
