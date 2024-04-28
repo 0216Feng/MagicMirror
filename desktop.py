@@ -54,7 +54,8 @@ class MainWindow(QMainWindow):
         # 无边框
         self.setWindowFlags(
             Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
-
+        # 设置主窗口全屏显示
+        self.showFullScreen()
         # 创建一个QLabel控件用于显示时间
         self.time = QLabel(self)
         self.time.resize(400, 100)
@@ -148,9 +149,8 @@ class MainWindow(QMainWindow):
             self.layout.removeWidget(self.gallery)
             self.gallery.setParent(None)
         # 重新设置布局
-        self.layout.addStretch(1)
         self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.setSpacing(0) 
+        self.layout.setSpacing(20) 
         self.setLayout() 
         mainWidget = QWidget()
         mainWidget.setLayout(self.layout)
