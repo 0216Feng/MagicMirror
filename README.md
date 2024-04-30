@@ -34,7 +34,7 @@
 * 相册：调用 https://github.com/PyQt5/PyQt/tree/master/QPropertyAnimation/Lib 实现多图滚动，使用PyQt5标签组件QPixmap显示
 * 网页端后台：使用fastapi作为后端服务器，前端使用响应式设计，可以开关组件和新增修改内容
 * 语音助手：调用pyaudio和wave库把录音打包为.wave文件（设置了录音的音量阈值）-> 讯飞语音文件转写（[API申请，可领取50小时免费额度](https://www.xfyun.cn/services/lfasr#anchor4503211)） -> 讯飞星火大模型匹配用户指令对应的数据库操作（[API申请，可领取200万tocken免费额度](https://xinghuo.xfyun.cn/sparkapi)）
-* 自动亮屏息屏：
+* 自动亮屏息屏：查阅screen.py中的注释和开发板手册中的引脚信息进行跳线，至少需要五条跳线，其中三条双母头线用于连接红外模块，一条双母头线用于检测屏幕是否亮屏（一端连接到驱动板上给屏幕供电的引脚），一条公母线用于控制驱动板的电源实现屏幕亮灭
 
 ### 运行
 
