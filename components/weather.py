@@ -89,8 +89,8 @@ class Weather(QWidget):
         weatherInfo.setScaledContents(True)
         weatherInfo.adjustSize()
         weatherInfo.setAlignment(Qt.AlignCenter)
-        layout.addWidget(weatherIcon, 2, 4, 1, 1)
-        layout.addWidget(weatherInfo, 2, 1, 9, 9)
+        layout.addWidget(weatherIcon, 3, 4, 1, 1)
+        layout.addWidget(weatherInfo, 2, 1, 12, 12)
     
 ''' if __name__ == '__main__':
     app = QApplication(sys.argv)

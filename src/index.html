@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN" >
+<head>
+  <meta charset="UTF-8">
+  <title>Magic Mirror Dashboard</title>
+  <style>
+    .rotate-45 {
+        --transform-rotate: 45deg;
+        transform: rotate(45deg);
+    }
+
+    .group:hover .group-hover\:flex {
+        display: flex;
+    }
+	
+	.toggle-dot {
+		top: -0.25rem;
+		left: -0.25rem;
+		transition: all 0.3s ease-in-out;
+	}
+
+	input:checked ~ .toggle-dot {
+		transform: translateX(1.5rem);
+		background-color: #4F46E5;
+	}
+
+	input:checked ~ .w-10 {
+		background-color: #a5b4fc;
+	}
+
+	#toast.show {
+        opacity: 1;
+        transition: opacity 0.5s;
+    }
+
+	#toast.hide {
+        opacity: 0;
+        transition: opacity 0.5s;
+ 	}
+	</style>
+	<link rel="icon" href="data:image/svg+xml;utf8,<svg t='1713469955014' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='10115' width='40' height='40'><path d='M1023.578353 510.828758c0 280.997647-227.796497 508.787451-508.794144 508.787451-281.00434 0-508.800837-227.789804-508.800836-508.787451S233.779869 2.034614 514.784209 2.034614c280.997647 0 508.787451 227.796497 508.787451 508.787451' fill='#F27BFF' p-id='10116'></path><path d='M514.777516 268.66949c-133.521569 0-242.152575 108.631007-242.152575 242.159268 0 133.521569 108.631007 242.152575 242.152575 242.152575 133.528261 0 242.159268-108.624314 242.159268-242.145882 0-133.534954-108.631007-242.165961-242.159268-242.165961m0 619.111739c-207.851922 0-376.952471-169.100549-376.95247-376.952471 0-207.851922 169.100549-376.959163 376.95247-376.959163 207.851922 0 376.959163 169.107242 376.959164 376.959163s-169.107242 376.952471-376.959164 376.952471' fill='#6343FF' p-id='10117'></path><path d='M423.962771 545.885699s37.29234 47.31817-15.534013 101.777569c-39.353725 40.551739-72.911477 42.452497-100.599634 78.439739 0 0-22.153203 33.236497 2.764131 60.924653 24.924026 27.688157 81.223948 15.687948 101.523242-41.535582 20.305987-57.223529 59.070745-130.128314 173.511111-158.740078l-161.664837-40.866301z' fill='#EC69FF' p-id='10118'></path><path d='M682.318641 502.743843c-77.757072 83.961307-193.428915 103.270065-258.35587 43.135164-64.926954-60.134902-54.526327-176.944523 23.230745-260.899138 77.763765-83.961307 193.428915-103.270065 258.35587-43.135163 64.933647 60.128209 54.526327 176.93783-23.230745 260.899137' fill='#EDA4FF' p-id='10119'></path><path d='M705.395451 241.11519c-64.920261-60.134902-180.598797-40.826144-258.355869 43.135163-76.385046 82.46881-87.595503 196.500915-26.436602 257.519268 0 0 2.288941 2.603503 6.980602 12.127372 11.464784 28.491294 11.866353 53.428706-19.342223 92.84936-35.070327 44.306405-72.91817 42.45919-100.592941 78.453124 0 0-22.153203 33.223111 2.757438 60.904575 1.298405 1.445647 2.697203 2.757438 4.156236 3.982223 25.519686 0.307869 54.921203-17.722562 68.420601-55.764497 19.964654-56.259765 57.825882-127.651974 167.855686-157.234196l-0.087006-0.020079c45.952837-8.312471 93.244235-33.83885 131.40664-75.053176 77.770458-83.954614 88.164392-200.764235 23.237438-260.899137' fill='#F8A4FF' p-id='10120'></path><path d='M655.293072 475.818667c-65.074196 70.254431-160.259346 87.910065-212.603817 39.434039-52.337778-48.482719-42.024157-144.738719 23.043346-214.99315 65.067503-70.254431 160.252654-87.910065 212.597124-39.43404 52.344471 48.482719 42.03085 144.738719-23.043346 214.993151' fill='#FEEEFF' p-id='10121'></path><path d='M418.066405 393.523869l292.797072-67.958797s1.445647 40.002928-3.359791 53.020444l-294.48366 57.591634s-4.330248-21.684706 5.046379-42.653281' fill='#FDD7FF' p-id='10122'></path><path d='M470.665203 305.767739c65.067503-70.254431 160.252654-87.910065 212.597124-39.43404 1.298405 1.204706 2.52319 2.456261 3.747974 3.71451a98.397699 98.397699 0 0 0-10.206536-11.09668c-52.337778-48.476026-147.529621-30.827085-212.597124 39.43404-63.461229 68.514301-74.812235 161.731765-26.791321 211.271947-40.350954-50.999216-27.17281-138.641569 33.249883-203.889777' fill='#D513EA' p-id='10123'></path><path d='M720.03932 255.732288c-2.777516-2.583425-5.682196-4.95268-8.647111-7.241621 57.497935 61.774641 45.189856 173.303634-29.81647 254.293333-74.424052 80.360575-183.55702 101.442928-249.708759 50.370092 2.108235 2.275556 4.283399 4.484183 6.579033 6.612496 64.926954 60.128209 180.598797 40.826144 258.362562-43.141856 77.757072-83.954614 88.157699-200.764235 23.230745-260.899137' fill='#EC69FF' p-id='10124'></path><path d='M414.351895 442.62902l284.243661-35.364811s-8.192 23.377987-14.938353 30.606222l-268.582484 14.991896s-0.368105-1.378719-0.729516-10.24' fill='#FDD7FF' p-id='10125'></path><path d='M370.206118 713.547294c-8.687268-9.804967-29.113725-5.896366-45.631582 8.734118-16.511163 14.630484-22.849255 34.441203-14.161987 44.239477 8.687268 9.81166 29.113725 5.903059 45.624889-8.727425 16.511163-14.630484 22.855948-34.441203 14.16868-44.24617' fill='#F9C2FF' p-id='10126'></path></svg>">
+	<link rel='stylesheet' href='https://lf9-cdn-tos.bytecdntp.com/cdn/expire-100-y/tailwindcss/2.2.19/tailwind.min.css'>
+	<link rel="stylesheet" href="/src/style.css">
+	<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-100-y/dayjs/1.10.8/dayjs.min.js" type="application/javascript"></script>
+	<script src="/src/script.js"></script>
+
+</head>
+<body>
+
+<!-- Component Start -->
+
+<div class="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">
+	<div class="flex items-center flex-shrink-0 w-full h-16 px-10 bg-white bg-opacity-75">
+		<svg t="1713469955014" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10115" width="40" height="40">
+			<path d="M1023.578353 510.828758c0 280.997647-227.796497 508.787451-508.794144 508.787451-281.00434 0-508.800837-227.789804-508.800836-508.787451S233.779869 2.034614 514.784209 2.034614c280.997647 0 508.787451 227.796497 508.787451 508.787451" fill="#F27BFF" p-id="10116"></path><path d="M514.777516 268.66949c-133.521569 0-242.152575 108.631007-242.152575 242.159268 0 133.521569 108.631007 242.152575 242.152575 242.152575 133.528261 0 242.159268-108.624314 242.159268-242.145882 0-133.534954-108.631007-242.165961-242.159268-242.165961m0 619.111739c-207.851922 0-376.952471-169.100549-376.95247-376.952471 0-207.851922 169.100549-376.959163 376.95247-376.959163 207.851922 0 376.959163 169.107242 376.959164 376.959163s-169.107242 376.952471-376.959164 376.952471" fill="#6343FF" p-id="10117"></path><path d="M423.962771 545.885699s37.29234 47.31817-15.534013 101.777569c-39.353725 40.551739-72.911477 42.452497-100.599634 78.439739 0 0-22.153203 33.236497 2.764131 60.924653 24.924026 27.688157 81.223948 15.687948 101.523242-41.535582 20.305987-57.223529 59.070745-130.128314 173.511111-158.740078l-161.664837-40.866301z" fill="#EC69FF" p-id="10118"></path><path d="M682.318641 502.743843c-77.757072 83.961307-193.428915 103.270065-258.35587 43.135164-64.926954-60.134902-54.526327-176.944523 23.230745-260.899138 77.763765-83.961307 193.428915-103.270065 258.35587-43.135163 64.933647 60.128209 54.526327 176.93783-23.230745 260.899137" fill="#EDA4FF" p-id="10119"></path><path d="M705.395451 241.11519c-64.920261-60.134902-180.598797-40.826144-258.355869 43.135163-76.385046 82.46881-87.595503 196.500915-26.436602 257.519268 0 0 2.288941 2.603503 6.980602 12.127372 11.464784 28.491294 11.866353 53.428706-19.342223 92.84936-35.070327 44.306405-72.91817 42.45919-100.592941 78.453124 0 0-22.153203 33.223111 2.757438 60.904575 1.298405 1.445647 2.697203 2.757438 4.156236 3.982223 25.519686 0.307869 54.921203-17.722562 68.420601-55.764497 19.964654-56.259765 57.825882-127.651974 167.855686-157.234196l-0.087006-0.020079c45.952837-8.312471 93.244235-33.83885 131.40664-75.053176 77.770458-83.954614 88.164392-200.764235 23.237438-260.899137" fill="#F8A4FF" p-id="10120"></path><path d="M655.293072 475.818667c-65.074196 70.254431-160.259346 87.910065-212.603817 39.434039-52.337778-48.482719-42.024157-144.738719 23.043346-214.99315 65.067503-70.254431 160.252654-87.910065 212.597124-39.43404 52.344471 48.482719 42.03085 144.738719-23.043346 214.993151" fill="#FEEEFF" p-id="10121"></path><path d="M418.066405 393.523869l292.797072-67.958797s1.445647 40.002928-3.359791 53.020444l-294.48366 57.591634s-4.330248-21.684706 5.046379-42.653281" fill="#FDD7FF" p-id="10122"></path><path d="M470.665203 305.767739c65.067503-70.254431 160.252654-87.910065 212.597124-39.43404 1.298405 1.204706 2.52319 2.456261 3.747974 3.71451a98.397699 98.397699 0 0 0-10.206536-11.09668c-52.337778-48.476026-147.529621-30.827085-212.597124 39.43404-63.461229 68.514301-74.812235 161.731765-26.791321 211.271947-40.350954-50.999216-27.17281-138.641569 33.249883-203.889777" fill="#D513EA" p-id="10123"></path><path d="M720.03932 255.732288c-2.777516-2.583425-5.682196-4.95268-8.647111-7.241621 57.497935 61.774641 45.189856 173.303634-29.81647 254.293333-74.424052 80.360575-183.55702 101.442928-249.708759 50.370092 2.108235 2.275556 4.283399 4.484183 6.579033 6.612496 64.926954 60.128209 180.598797 40.826144 258.362562-43.141856 77.757072-83.954614 88.157699-200.764235 23.230745-260.899137" fill="#EC69FF" p-id="10124"></path><path d="M414.351895 442.62902l284.243661-35.364811s-8.192 23.377987-14.938353 30.606222l-268.582484 14.991896s-0.368105-1.378719-0.729516-10.24" fill="#FDD7FF" p-id="10125"></path><path d="M370.206118 713.547294c-8.687268-9.804967-29.113725-5.896366-45.631582 8.734118-16.511163 14.630484-22.849255 34.441203-14.161987 44.239477 8.687268 9.81166 29.113725 5.903059 45.624889-8.727425 16.511163-14.630484 22.855948-34.441203 14.16868-44.24617" fill="#F9C2FF" p-id="10126"></path>
+		</svg>
+		<span class="ml-3 text-xl font-bold">MagicMirror 控制面板</span>
+	</div>
+	
+	<div class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">小组件</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30">7</span>
+			</div>
+			
+			<div class="flex flex-col pb-2 overflow-auto">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						天气
+						</h3>
+						<label for="weatherToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="weatherToggle" type="checkbox" class="sr-only" checked disabled />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示当前位置的天气信息 (默认一直开启).<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						每日新闻
+						</h3>
+						<label for="newsToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="newsToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示每日头条.<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						课程表
+						</h3>
+						<label for="courseToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="courseToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示课程表信息，内容可以在「课程」中添加或修改.<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						日程
+						</h3>
+						<label for="scheduleToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="scheduleToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示添加的日程信息，内容可以在「日程」中添加或修改.<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						备忘录
+						</h3>
+						<label for="tipsToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="tipsToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示备忘录信息，内容可以在「备忘录」中添加或修改.<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						个人护理产品
+						</h3>
+						<label for="careToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="careToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上展示个人护理产品信息，内容可以在「个人护理产品」中添加或修改.<br /></h4>
+					</div>
+				</div>
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<div class="flex flex-wrap">
+						<h3 class="flex-auto text-md font-semibold text-slate-900">
+						相册
+						</h3>
+						<label for="galleryToggle" class="flex items-center cursor-pointer ml-4">
+							<div class="relative">
+								<input id="galleryToggle" type="checkbox" class="sr-only" />
+								<div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+								<div class="toggle-dot absolute w-4 h-4 bg-white rounded-full shadow inset-y-0 left-0"></div>
+							</div>
+						</label>
+						<h4 class="mt-3 text-sm font-medium">在镜子上轮播相册图片，图片请在「相册」中添加或修改.<br /></h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">课程</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30" id="courseCount"></span>
+				<button class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100" id="addCourse">
+					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="flex flex-col pb-2 overflow-auto" id="courseInfo">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
+						<svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+							<path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+						</svg>
+					</button>
+					<span class="flex items-center h-6 px-3 text-xs font-semibold text-blue-500 bg-blue-100 rounded-full">Course</span>
+					<h4 class="mt-3 text-md font-medium"><b>人工智能</b></h4>
+					<p class="mt-3 text-sm text-gray-500">Description: <br /><span style="margin-left: 2em">Teacher: 香菜</span><br /><span style="margin-left: 2em">Killer!!!</span></p>
+					<div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
+						<div class="flex items-center">
+							<svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+							</svg>
+							<span class="ml-1 leading-none">星期三 9:00 - 11:50</span>
+						</div>
+						<div class="relative flex items-center ml-4">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1713467264420" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="4273" width="22" height="22">
+								<path d="M503.23456 885.82144l-14.04928-14.15168C478.02368 860.38528 215.49056 593.92 215.49056 434.7904c0-163.55328 129.29024-296.61184 288.21504-296.61184 158.90432 0 288.21504 132.28032 288.256 294.87104 0.04096 159.0272-271.4624 436.51072-274.20672 439.07072l-14.52032 13.70112z m0.49152-706.6624c-136.33536 0-247.25504 114.688-247.25504 255.65184 0 122.79808 192.7168 335.21664 247.48032 393.09312C563.2 765.62432 751.06304 549.4784 751.02208 433.07008c-0.04096-140.00128-110.98112-253.91104-247.296-253.91104z m1.88416 360.83712c-68.9152 0-125.00992-57.79456-125.00992-128.83968s56.07424-128.8192 125.00992-128.8192c68.89472 0 124.96896 57.79456 124.96896 128.8192s-56.05376 128.83968-124.96896 128.83968z m0-216.6784c-46.34624 0-84.04992 39.40352-84.04992 87.8592s37.70368 87.8592 84.04992 87.8592c46.32576 0 84.00896-39.40352 84.00896-87.8592s-37.6832-87.8592-84.00896-87.8592z" fill="#bfbfbf" p-id="4274"/>
+							</svg>
+							<span class="ml-1 leading-none">C602</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">日程</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30" id="scheduleCount"></span>
+				<button class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100" id="addSchedule">
+					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="flex flex-col pb-2 overflow-auto" id="scheduleInfo">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
+						<svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+							<path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+						</svg>
+					</button>
+					<span class="flex items-center h-6 px-3 text-xs font-semibold text-blue-500 bg-blue-100 rounded-full">Course</span>
+					<h4 class="mt-3 text-md font-medium"><b>人工智能</b></h4>
+					<p class="mt-3 text-sm text-gray-500">Description: <br /><span style="margin-left: 2em">Teacher: 香菜</span><br /><span style="margin-left: 2em">Killer!!!</span></p>
+					<div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
+						<div class="flex items-center">
+							<svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+							</svg>
+							<span class="ml-1 leading-none">星期三 9:00 - 11:50</span>
+						</div>
+						<div class="relative flex items-center ml-4">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1713467264420" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="4273" width="22" height="22">
+								<path d="M503.23456 885.82144l-14.04928-14.15168C478.02368 860.38528 215.49056 593.92 215.49056 434.7904c0-163.55328 129.29024-296.61184 288.21504-296.61184 158.90432 0 288.21504 132.28032 288.256 294.87104 0.04096 159.0272-271.4624 436.51072-274.20672 439.07072l-14.52032 13.70112z m0.49152-706.6624c-136.33536 0-247.25504 114.688-247.25504 255.65184 0 122.79808 192.7168 335.21664 247.48032 393.09312C563.2 765.62432 751.06304 549.4784 751.02208 433.07008c-0.04096-140.00128-110.98112-253.91104-247.296-253.91104z m1.88416 360.83712c-68.9152 0-125.00992-57.79456-125.00992-128.83968s56.07424-128.8192 125.00992-128.8192c68.89472 0 124.96896 57.79456 124.96896 128.8192s-56.05376 128.83968-124.96896 128.83968z m0-216.6784c-46.34624 0-84.04992 39.40352-84.04992 87.8592s37.70368 87.8592 84.04992 87.8592c46.32576 0 84.00896-39.40352 84.00896-87.8592s-37.6832-87.8592-84.00896-87.8592z" fill="#bfbfbf" p-id="4274"/>
+							</svg>
+							<span class="ml-1 leading-none">C602</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">备忘录</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30" id="tipsCount"></span>
+				<button class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100" id="addTips">
+					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="flex flex-col pb-2 overflow-auto" id="tipsInfo">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
+						<svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+							<path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+						</svg>
+					</button>
+					<span class="flex items-center h-6 px-3 text-xs font-semibold text-blue-500 bg-blue-100 rounded-full">Course</span>
+					<h4 class="mt-3 text-md font-medium"><b>人工智能</b></h4>
+					<p class="mt-3 text-sm text-gray-500">Description: <br /><span style="margin-left: 2em">Teacher: 香菜</span><br /><span style="margin-left: 2em">Killer!!!</span></p>
+					<div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
+						<div class="flex items-center">
+							<svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+							</svg>
+							<span class="ml-1 leading-none">星期三 9:00 - 11:50</span>
+						</div>
+						<div class="relative flex items-center ml-4">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1713467264420" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="4273" width="22" height="22">
+								<path d="M503.23456 885.82144l-14.04928-14.15168C478.02368 860.38528 215.49056 593.92 215.49056 434.7904c0-163.55328 129.29024-296.61184 288.21504-296.61184 158.90432 0 288.21504 132.28032 288.256 294.87104 0.04096 159.0272-271.4624 436.51072-274.20672 439.07072l-14.52032 13.70112z m0.49152-706.6624c-136.33536 0-247.25504 114.688-247.25504 255.65184 0 122.79808 192.7168 335.21664 247.48032 393.09312C563.2 765.62432 751.06304 549.4784 751.02208 433.07008c-0.04096-140.00128-110.98112-253.91104-247.296-253.91104z m1.88416 360.83712c-68.9152 0-125.00992-57.79456-125.00992-128.83968s56.07424-128.8192 125.00992-128.8192c68.89472 0 124.96896 57.79456 124.96896 128.8192s-56.05376 128.83968-124.96896 128.83968z m0-216.6784c-46.34624 0-84.04992 39.40352-84.04992 87.8592s37.70368 87.8592 84.04992 87.8592c46.32576 0 84.00896-39.40352 84.00896-87.8592s-37.6832-87.8592-84.00896-87.8592z" fill="#bfbfbf" p-id="4274"/>
+							</svg>
+							<span class="ml-1 leading-none">C602</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">个人护理产品</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30" id="careCount"></span>
+				<button class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100" id="addCare">
+					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="flex flex-col pb-2 overflow-auto" id="careInfo">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
+						<svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+							<path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+						</svg>
+					</button>
+					<span class="flex items-center h-6 px-3 text-xs font-semibold text-blue-500 bg-blue-100 rounded-full">Course</span>
+					<h4 class="mt-3 text-md font-medium"><b>人工智能</b></h4>
+					<p class="mt-3 text-sm text-gray-500">Description: <br /><span style="margin-left: 2em">Teacher: 香菜</span><br /><span style="margin-left: 2em">Killer!!!</span></p>
+					<div class="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
+						<div class="flex items-center">
+							<svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+								<path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+							</svg>
+							<span class="ml-1 leading-none">星期三 9:00 - 11:50</span>
+						</div>
+						<div class="relative flex items-center ml-4">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1713467264420" class="icon" viewBox="0 0 1024 1024" version="1.1" p-id="4273" width="22" height="22">
+								<path d="M503.23456 885.82144l-14.04928-14.15168C478.02368 860.38528 215.49056 593.92 215.49056 434.7904c0-163.55328 129.29024-296.61184 288.21504-296.61184 158.90432 0 288.21504 132.28032 288.256 294.87104 0.04096 159.0272-271.4624 436.51072-274.20672 439.07072l-14.52032 13.70112z m0.49152-706.6624c-136.33536 0-247.25504 114.688-247.25504 255.65184 0 122.79808 192.7168 335.21664 247.48032 393.09312C563.2 765.62432 751.06304 549.4784 751.02208 433.07008c-0.04096-140.00128-110.98112-253.91104-247.296-253.91104z m1.88416 360.83712c-68.9152 0-125.00992-57.79456-125.00992-128.83968s56.07424-128.8192 125.00992-128.8192c68.89472 0 124.96896 57.79456 124.96896 128.8192s-56.05376 128.83968-124.96896 128.83968z m0-216.6784c-46.34624 0-84.04992 39.40352-84.04992 87.8592s37.70368 87.8592 84.04992 87.8592c46.32576 0 84.00896-39.40352 84.00896-87.8592s-37.6832-87.8592-84.00896-87.8592z" fill="#bfbfbf" p-id="4274"/>
+							</svg>
+							<span class="ml-1 leading-none">C602</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-col flex-shrink-0 w-72">
+			<div class="flex items-center flex-shrink-0 h-10 px-2">
+				<span class="block text-sm font-semibold">相册</span>
+				<span class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30" id="galleryCount"></span>
+				<button class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100" id="addGallery">
+					<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+					</svg>
+				</button>
+			</div>
+			<div class="flex flex-col pb-2 overflow-auto" id="galleryInfo">
+				<div class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+					<button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex" bid="${bid}">
+						<svg t="1713527777962" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6969" width="15" height="15">
+                            <path d="M548.316196 512l468.011988-468.011988c10.22977-10.22977 10.22977-26.085914 0-36.315684s-26.085914-10.22977-36.315684 0L512.000511 475.684316 43.988523 8.183816c-10.22977-10.22977-26.085914-10.22977-36.315684 0s-10.22977 26.085914 0 36.315684L475.684827 512 8.184328 980.011988c-10.22977 10.22977-10.22977 26.085914 0 36.315684 5.114885 5.114885 11.764236 7.672328 17.902098 7.672328s13.298701-2.557443 17.902097-7.672328l468.011988-468.011988 468.011989 468.011988c5.114885 5.114885 11.764236 7.672328 17.902097 7.672328s13.298701-2.557443 17.902098-7.672328c10.22977-10.22977 10.22977-26.085914 0-36.315684L548.316196 512z" fill="#8a8a8a" p-id="6970"></path>
+                        </svg>
+                    </button>
+					<div class="grid gap-4 col-start-1 col-end-3 row-start-1 ">
+						<img src="/assets/IKUN0.jpg" alt="" class="w-full object-cover rounded-lg sm:h-52 sm:col-span-2 lg:col-span-full" loading="lazy">
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		
+	
+	</div>
+<!-- Component End -->
+
+<a class="fixed bottom-0 right-0 flex items-center justify-center h-8 pl-1 pr-2 mb-6 mr-4 text-blue-100 bg-slate-400 rounded-full shadow-lg" href="https://github.com/0216Feng/MagicMirror" target="_top">
+	<div class="flex items-center justify-center w-6 h-6 bg-slate-100 rounded-full">
+		<svg t="1713473101173" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4247" width="200" height="200"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9 23.5 23.2 38.1 55.4 38.1 91v112.5c0.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z" p-id="4248"></path></svg>
+	</div>
+	<span class="ml-1 text-sm leading-none text-black">Github</span>
+</a>
+
+<!-- partial -->
+<!-- Modal -->
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="background-color: rgba(0,0,0,0.5);" id="courseModal">
+    <div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto" id="courseModalContainer">
+        <div class="courseModalClose absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50" id="courseModalClose">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+            </svg>
+            <span class="text-sm">(Esc)</span>
+        </div>
+        <div class="modal-content py-4 text-left px-6">
+            <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">请输入新的课程信息</p>
+                <div class="courseModalClose cursor-pointer z-50">
+                    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+                    </svg>
+                </div>
+            </div>
+			<label for="Coursetitle" class="course-modal-label">课程名称<span class="text-red-500">*</span>：</label>
+			<input type="text" id="Coursetitle" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入标题...">
+
+			<label for="Coursedescription" class="course-modal-label">课程描述（可选）：</label>
+			<input type="text" id="Coursedescription" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入描述">
+
+			<label for="Courseweek" class="course-modal-label">星期<span class="text-red-500">*</span>：</label>
+			<input type="text" id="Courseweek" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入星期，例如：'星期一'">
+
+			<label for="Coursetime" class="course-modal-label">时间<span class="text-red-500">*</span>：</label>
+			<input type="text" id="Coursetime" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入时间">
+
+			<label for="Courselocation" class="course-modal-label">地点（可选）：</label>
+			<input type="text" id="Courselocation" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入地点">
+            
+			<div class="flex justify-end pt-2">
+                <button class="courseModalClose px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400">取消</button>
+                <button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 ml-2" id="courseModalConfirm">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="background-color: rgba(0,0,0,0.5);" id="scheduleModal">
+    <div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto" id="scheduleModalContainer">
+        <div class="scheduleModalClose absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+            </svg>
+            <span class="text-sm">(Esc)</span>
+        </div>
+        <div class="modal-content py-4 text-left px-6">
+            <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">请输入新的日程信息</p>
+                <div class="scheduleModalClose cursor-pointer z-50">
+                    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+                    </svg>
+                </div>
+            </div>
+			<label for="Scheduletitle" class="modal-label">日程标题<span class="text-red-500">*</span>：</label>
+			<input type="text" id="Scheduletitle" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入标题...">
+
+			<label for="Scheduledescription" class="modal-label">日程描述（可选）：</label>
+			<input type="text" id="Scheduledescription" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入描述">
+
+			<label for="Scheduletime" class="modal-label">时间<span class="text-red-500">*</span>：</label>
+			<input type="text" id="Scheduletime" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入时间">
+
+			<label for="Schedulelocation" class="modal-label">地点（可选）：</label>
+			<input type="text" id="Schedulelocation" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入地点">
+            
+			<div class="flex justify-end pt-2">
+                <button class="scheduleModalClose px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400">取消</button>
+                <button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 ml-2" id="scheduleModalConfirm">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="background-color: rgba(0,0,0,0.5);" id="tipsModal">
+	<div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto" id="tipsModalContainer">
+		<div class="tipsModalClose absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+			<svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+				<path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+			</svg>
+			<span class="text-sm">(Esc)</span>
+		</div>
+		<div class="modal-content py-4 text-left px-6">
+			<div class="flex justify-between items-center pb-3">
+				<p class="text-2xl font-bold">请输入新的备忘录信息</p>
+				<div class="tipsModalClose cursor-pointer z-50">
+					<svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+						<path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+					</svg>
+				</div>
+			</div>
+			<label for="tipsTitle" class="modal-label">备忘录标题<span class="text-red-500">*</span>：
+			<input type="text" id="tipsTitle" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入备忘录标题...">
+
+			<label for="tipsContent" class="modal-label">备忘录内容<span class="text-red-500">*</span>：
+				<input type="text" id="tipsContent" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入备忘录内容...">
+			<div class="flex justify-end pt-2">
+				<button class="tipsModalClose px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400">取消</button>
+				<button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 ml-2" id="tipsModalConfirm">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="background-color: rgba(0,0,0,0.5);" id="careModal">
+	<div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto" id="careModalContainer">
+		<div class="careModalClose absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+			<svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+				<path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+			</svg>
+			<span class="text-sm">(Esc)</span>
+		</div>
+		<div class="modal-content py-4 text-left px-6">
+			<div class="flex justify-between items-center pb-3">
+				<p class="text-2xl font-bold">请输入新的个人护理产品信息</p>
+				<div class="careModalClose cursor-pointer z-50">
+					<svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+						<path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+					</svg>
+				</div>
+			</div>
+			<label for="careBrand" class="modal-label">品牌<span class="text-red-500">*</span>：
+			<input type="text" id="careBrand" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入个人护理产品品牌...">
+
+			<label for="careType" class="modal-label">个人护理产品类型<span class="text-red-500">*</span>：
+			<input type="text" id="careType" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入个人护理产品类型...">
+
+			<label for="careExpire" class="modal-label">保质期<span class="text-red-500">*</span>：
+			<input type="text" id="careExpire" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入保质期，YYYY-MM-DD...">
+
+			<label for="careDescription" class="modal-label">描述（可选）：
+			<input type="text" id="careDescription" class="modal-input bg-gray-200 mb-4 border border-gray-300 p-2 rounded w-full" placeholder="请输入描述...">
+			<div class="flex justify-end pt-2">
+				<button class="careModalClose px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400">取消</button>
+				<button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 ml-2" id="careModalConfirm">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="background-color: rgba(0,0,0,0.5);" id="galleryModal">
+    <div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto" id="galleryModalContainer">
+        <div class="galleryModalClose absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+            </svg>
+            <span class="text-sm">(Esc)</span>
+        </div>
+        <div class="modal-content py-4 text-left px-6">
+            <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">请上传新的相册图片</p>
+                <div class="galleryModalClose cursor-pointer z-50">
+                    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+                    </svg>
+                </div>
+            </div>
+			<div id="filePreviewContainer" class="py-4 text-center" style="display: none;"></div>
+            <div class="file-upload-container py-4 text-center" style="display: block;">
+                <label class="upload-label w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-white">
+                    <svg t="1713610649547" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4326" width="45" height="45">
+						<path d="M85.333333 85.333333h85.333334v85.333334H85.333333V85.333333zM256 85.333333h85.333333v85.333334H256V85.333333zM426.666667 85.333333h85.333333v85.333334h-85.333333V85.333333zM597.333333 85.333333h85.333334v85.333334h-85.333334V85.333333zM597.333333 256h85.333334v85.333333h-85.333334V256zM85.333333 256h85.333334v85.333333H85.333333V256zM85.333333 426.666667h85.333334v85.333333H85.333333v-85.333333zM85.333333 597.333333h85.333334v85.333334H85.333333v-85.333334zM256 597.333333h85.333333v85.333334H256v-85.333334z" fill="#09121F" p-id="4327"></path>
+						<path d="M426.666667 853.333333V426.666667h426.666666v128h85.333334V384a42.666667 42.666667 0 0 0-42.666667-42.666667H384a42.666667 42.666667 0 0 0-42.666667 42.666667v512a42.666667 42.666667 0 0 0 42.666667 42.666667h213.333333v-85.333334h-170.666666z" fill="#09121F" p-id="4328"></path><path d="M682.666667 554.666667l298.666666 170.666666-170.666666 42.666667-128 128v-341.333333z" fill="#09121F" p-id="4329"></path><path d="M746.666667 768l73.898666-42.666667 106.666667 184.746667-73.898667 42.666667L746.666667 768z" fill="#09121F" p-id="4330"></path>
+					</svg>
+                    <span class="mt-2 text-base leading-normal">选择文件或拖拽到这里<span class="text-red-500">*</span></span>
+                    <input type='file' class="hidden" />
+                </label>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button class="px-4 bg-gray-500 p-3 rounded-lg text-white hover:bg-gray-400" id="clearButton">清除</button>
+                <button class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400 ml-2" id="galleryModalConfirm">上传</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-5 right-5 flex flex-col p-4 mb-4 bg-white rounded-lg shadow text-sm text-gray-700 opacity-0 transition-opacity duration-300 ease-in-out" style="z-index: 10000;">
+    <div class="flex justify-between items-center">
+        <strong class="text-md">提示信息</strong>
+        <span class="galleryModalClose cursor-pointer">
+            <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 18 18">
+                <path d="M16.2 0L9 7.2 1.8 0 0 1.8l7.2 7.2L0 16.2 1.8 18l7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2L18 1.8 16.2 0z"></path>
+            </svg>
+        </span>
+    </div>
+    <div id="toast-body" class="my-3"></div>
+    <div class="w-full bg-gray-200 rounded h-1.5 dark:bg-gray-700">
+        <div id="toast-progress" class="bg-blue-600 h-1.5 rounded" style="width: 100%;"></div>
+    </div>
+</div>
+</body>
+</html>

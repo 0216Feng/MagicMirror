@@ -136,6 +136,7 @@ class SparkGPT(object):
         self.error_code_dict = self.spark_info.get('error_code_dict', {})
         self.flow_print = False  # 多轮会话中，是否使用流式打印
 
+        self.character = self.spark_info.get('character', '')  # 文本编码格式
         # 获取配置文件中的预设prompt
         self.prompt = self.spark_info.get('prompt', '')
         # 如果实例化时，用户传入了prompt，则优先使用用户的prompt
@@ -452,9 +453,9 @@ class SparkGPT(object):
         ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
     def make_text(self, role, content):
-
         # 如果是第一次提问，并且用户提供了prompt，或者配置文件中配置了prompt，则问题内容前添加上prompt
         if not self.text and self.prompt:
+            self.text.append({"role": "system", "content": self.character})
             self.text.append({"role": role, "content": self.prompt + content})
         else:
             self.text.append({"role": role, "content": content})

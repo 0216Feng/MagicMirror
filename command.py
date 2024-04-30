@@ -1,10 +1,10 @@
-from record import listen, RequestApi
-from voiceassistant import SparkGPT
+from assistant.record import listen, RequestApi
+from assistant.voiceassistant import SparkGPT
 import datetime
 import sqlite3
 import json
 
-api = RequestApi(appid="9de35c86", secret_key="ce48950bb9ce8acde19dd90e9d1b8657", upload_file_path=r"output.wav")
+api = RequestApi(appid="", secret_key="", upload_file_path=r"output.wav")
 while True:
     if(listen()):
         text = api.get_result()

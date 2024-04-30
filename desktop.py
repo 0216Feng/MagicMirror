@@ -2,13 +2,13 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from course import Course
-from weather import Weather
-from selfcare import SelfCare
-from daily import Daily
-from tips import Tips
-from news import News
-from gallery import Gallery
+from components.course import Course
+from components.weather import Weather
+from components.selfcare import SelfCare
+from components.daily import Daily
+from components.tips import Tips
+from components.news import News
+from components.gallery import Gallery
 import qdarkstyle
 import sqlite3
 
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(
             Qt.Window | Qt.FramelessWindowHint | Qt.WindowSystemMenuHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
         # 设置主窗口全屏显示
-        self.showFullScreen()
+        #self.showFullScreen()
         # 创建一个QLabel控件用于显示时间
         self.time = QLabel(self)
         self.time.resize(400, 100)
@@ -99,13 +99,15 @@ class MainWindow(QMainWindow):
         self.time.setText(timeDisplay)
          
     def initUI(self):
+        headerLayout = QHBoxLayout()
+        headerLayout.addWidget(self.time)
+        headerLayout.addWidget(self.weather)
         # 设置垂直布局
         self.layout = QVBoxLayout()
         # 时间组件居中
         self.time.setAlignment(Qt.AlignCenter | Qt.AlignCenter)
         # 根据后台返回的状态信息，添加组件到布局
-        self.layout.addWidget(self.time)
-        self.layout.addWidget(self.weather)
+        self.layout.addLayout(headerLayout)
         self.layout.setSpacing(20)   
         self.setLayout()
         # 设置主窗口的布局
